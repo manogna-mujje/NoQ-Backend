@@ -4,9 +4,6 @@ var Queue = mongoose.model('Queue', {
     placeId: {
         type: String
     },
-    queueId: {
-        type: String
-    },
     date: {
         type: String
     },

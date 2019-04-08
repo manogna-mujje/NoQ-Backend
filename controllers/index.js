@@ -78,7 +78,6 @@ function deletePlace(req, res){
 
 function insertQueue(req, res){
     var newQueue =  new Queue({
-        queueId: req.body.queueId,
         date: getTodaysDate(),
         placeId: req.body.placeId,
         waitTime: req.body.waitTime,
@@ -163,7 +162,7 @@ function removeUser(req, res){
 
 function getTodaysDate() {
     var sysdate = new Date();
-    var date =  sysdate.getFullYear().toString() + "-" + (sysdate.getMonth()+1).toString() + "-" + sysdate.getDate().toString()  ;
+    var date =  sysdate.getFullYear().toString() + "-" + (sysdate.getMonth()+1).toString() + "-" + sysdate.getDate().toString();
     return date;
 }
 
