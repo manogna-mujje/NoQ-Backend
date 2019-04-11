@@ -1,8 +1,10 @@
 require('../db/mongoose');
 var modelPlace = require ('../models/place');
 var modelQueue = require ('../models/queue');
+var modelUser = require ('../models/user');
 var Place = modelPlace.Place;
 var Queue = modelQueue.Queue;
+var User = modelUser.User;
 
 function getHome (req, res){
     res.send("Hello World");
@@ -24,6 +26,44 @@ function insertPlace(req, res){
             res.status(400).send("Error occured!");
         }
     });
+}
+
+function signup(req, res){
+  var newUser =  new User({
+    email: req.body.email,
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    password: req.body.password,
+  });
+  newUser.save().then(()=>{
+    res.send("Successful").status(201);
+}).catch((err)=>{
+    if(err){
+      console.log("Err: " + err);
+      res.status(400).send("Error occured!");
+    }
+  });
+}
+
+function login(req, res){
+    console.log("logged in user", req.query.email, req.query.password)
+  User.findOne({
+    email: req.query.email,
+    password: req.query.password,
+  }).then((docs)=>{
+    var user = {
+        firstname: docs.firstname,
+        lastname: docs.lastname
+    }
+    if(docs){
+      res.status(200).send(user);
+    } else {
+      res.status(404).send("Email/password wrong.");
+}
+}).catch((err)=>{
+    console.log("Err: " + err);
+  res.status(400).send("Error occured!");
+})
 }
 
 function updatePlace(req, res){
@@ -176,5 +216,7 @@ module.exports = {
     insertQueue,
     updateWaitTime,
     addUser,
-    removeUser
+    removeUser,
+    signup,
+    login
 }
