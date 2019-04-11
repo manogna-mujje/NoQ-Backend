@@ -22,4 +22,8 @@ router.post('/queues/addUser', cntl.addUser);
 
 router.patch('/queues/removeUser', cntl.removeUser);
 
+router.post('/signup', cntl.signup);
+
+router.get('/login', cntl.login);
+
 module.exports = router;
