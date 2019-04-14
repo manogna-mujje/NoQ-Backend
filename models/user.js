@@ -14,6 +14,9 @@ var User = mongoose.model('User', {
   },
   password: {
       type: String
+  },
+  role: {
+    type: String
   }
 });
 

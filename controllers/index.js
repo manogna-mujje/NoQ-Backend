@@ -34,6 +34,7 @@ function signup(req, res){
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     password: req.body.password,
+    role: req.body.role,
   });
   newUser.save().then(()=>{
     res.send("Successful").status(201);
@@ -53,7 +54,8 @@ function login(req, res){
   }).then((docs)=>{
     var user = {
         firstname: docs.firstname,
-        lastname: docs.lastname
+        lastname: docs.lastname,
+        role: docs.role
     }
     if(docs){
       res.status(200).send(user);
