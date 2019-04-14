@@ -37,7 +37,7 @@ function signup(req, res){
     role: req.body.role,
   });
   newUser.save().then(()=>{
-    res.send("Successful").status(201);
+    res.status(201).send("Successful");
 }).catch((err)=>{
     if(err){
       console.log("Err: " + err);
