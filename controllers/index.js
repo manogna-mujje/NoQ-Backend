@@ -37,7 +37,7 @@ function signup(req, res){
     role: req.body.role,
   });
   newUser.save().then(()=>{
-    res.send("Successful").status(201);
+    res.status(201).send("Successful");
 }).catch((err)=>{
     if(err){
       console.log("Err: " + err);
@@ -47,20 +47,20 @@ function signup(req, res){
 }
 
 function login(req, res){
-    console.log("logged in user", req.query.email, req.query.password)
   User.findOne({
     email: req.query.email,
     password: req.query.password,
   }).then((docs)=>{
-    var user = {
+    if(docs){
+      var user = {
         firstname: docs.firstname,
         lastname: docs.lastname,
         role: docs.role
-    }
-    if(docs){
+      }
       res.status(200).send(user);
     } else {
-      res.status(404).send("Email/password wrong.");
+      console.log("no user found");
+      res.status(401).send("Email/password wrong.");
 }
 }).catch((err)=>{
     console.log("Err: " + err);
