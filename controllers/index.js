@@ -47,19 +47,19 @@ function signup(req, res){
 }
 
 function login(req, res){
-    console.log("logged in user", req.query.email, req.query.password)
   User.findOne({
     email: req.query.email,
     password: req.query.password,
   }).then((docs)=>{
-    var user = {
+    if(docs){
+      var user = {
         firstname: docs.firstname,
         lastname: docs.lastname,
         role: docs.role
-    }
-    if(docs){
+      }
       res.status(200).send(user);
     } else {
+      console.log("no user found");
       res.status(401).send("Email/password wrong.");
 }
 }).catch((err)=>{
