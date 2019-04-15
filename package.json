@@ -4,14 +4,14 @@
   "description": "Android app to avoid Queues",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec node app.js",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Manogna",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.2",
+    "express": "^4.16.4",
     "mongodb": "^2.2.33",
     "mongoose": "^5.3.14"
   },
