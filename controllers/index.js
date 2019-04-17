@@ -159,7 +159,7 @@ function addUser(req, res){
         placeId: req.body.placeId, 
         date: getTodaysDate()
     };
-console.log(getTodaysDate());
+    console.log(getTodaysDate());
     var update = {
         $push : {
             queueMembers: {
@@ -202,6 +202,23 @@ function removeUser(req, res){
     });
 }
 
+function getQueue(req, res){
+    Queue.aggregate([{$match : {placeId: req.body.placeId}},
+    { $match: {date: getTodaysDate()}},
+    { $unwind: '$queueMembers'},
+    { $match: {'queueMembers.isActive':true}}])
+    .project({"_id" : 0, "queueMembers.userId" : 1})
+    .then((docs)=>{
+        if(docs){
+            res.status(200).send({"queueLength": docs.length});
+        } else {
+            res.status(404).send("No data exists for this input.");
+        }
+    }).catch((err)=>{
+        res.status(400).send("Error occured!");
+    });
+}
+
 function getTodaysDate() {
     var sysdate = new Date();
     var date =  sysdate.getFullYear().toString() + "-" + (sysdate.getMonth()+1).toString() + "-" + sysdate.getDate().toString();
@@ -216,6 +233,7 @@ module.exports = {
     getOnePlace,
     deletePlace,
     insertQueue,
+    getQueue,
     updateWaitTime,
     addUser,
     removeUser,

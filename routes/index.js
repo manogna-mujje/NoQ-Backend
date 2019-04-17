@@ -14,6 +14,8 @@ router.get('/places/:placeId', cntl.getOnePlace);
 
 router.delete('/places', cntl.deletePlace);
 
+router.get('/queues', cntl.getQueue);
+
 router.post('/queues', cntl.insertQueue);
 
 router.patch('/queues', cntl.updateWaitTime);
