@@ -207,10 +207,10 @@ function getQueue(req, res){
     { $match: {date: getTodaysDate()}},
     { $unwind: '$queueMembers'},
     { $match: {'queueMembers.isActive':true}}])
-    .project({"_id" : 0, "queueMembers.userId" : 1})
+    .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1})
     .then((docs)=>{
         if(docs){
-            res.status(200).send({"queueLength": docs.length});
+            res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length});
         } else {
             res.status(404).send("No data exists for this input.");
         }
