@@ -100,7 +100,7 @@ function getOnePlace(req, res){
         if(docs){
             res.status(200).send(docs);
         } else {
-            res.status(404).send("No data exists for this email.");
+            res.status(404).send("No data exists for this placeId.");
         }
     }).catch((err)=>{
         console.log("Err: " + err);
@@ -203,7 +203,7 @@ function removeUser(req, res){
 }
 
 function getQueue(req, res){
-    Queue.aggregate([{$match : {placeId: req.body.placeId}},
+    Queue.aggregate([{$match : {placeId: req.query.placeId}},
     { $match: {date: getTodaysDate()}},
     { $unwind: '$queueMembers'},
     { $match: {'queueMembers.isActive':true}}])
