@@ -210,6 +210,7 @@ function getQueue(req, res){
     .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1})
     .then((docs)=>{
         if(docs){
+            console.log(docs)
             res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length});
         } else {
             res.status(404).send("No data exists for this input.");
