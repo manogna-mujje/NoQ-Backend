@@ -215,7 +215,7 @@ function getQueue(req, res){
             res.status(404).send("No data exists for this input.");
         }
     }).catch((err)=>{
-        res.status(400).send("Error occured!");
+        res.status(400).send("Error occured - " + err);
     });
 }
 
