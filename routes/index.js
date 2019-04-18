@@ -28,4 +28,6 @@ router.post('/signup', cntl.signup);
 
 router.get('/login', cntl.login);
 
+router.get('/myplaces', cntl.getPlacesCreatedByAdmin);
+
 module.exports = router;
