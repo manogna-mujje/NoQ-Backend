@@ -19,7 +19,7 @@ function insertPlace(req, res){
         longitude: req.body.longitude
     });
     newPlace.save().then(()=>{
-        res.send("Successful").status(201);
+        res.status(201).send("Successful");
     }).catch((err)=>{
         if(err){
             console.log("Err: " + err);
@@ -93,6 +93,16 @@ function getAllPlaces(req, res){
         }
         res.status(200).send(docs);
     });
+}
+
+function getPlacesCreatedByAdmin(req, res){
+  Place.find({email: req.query.email}, (err, docs)=> {
+    if(err){
+      console.log("Err: " + err);
+      res.status(400).send("Error occured!");
+    }
+    res.status(200).send(docs);
+});
 }
 
 function getOnePlace(req, res){
@@ -238,5 +248,6 @@ module.exports = {
     addUser,
     removeUser,
     signup,
-    login
+    login,
+    getPlacesCreatedByAdmin
 }
