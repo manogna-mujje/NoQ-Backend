@@ -19,7 +19,7 @@ function insertPlace(req, res){
         longitude: req.body.longitude
     });
     newPlace.save().then(()=>{
-        res.status(201).send("Successful");
+        res.send("Successful").status(201);
     }).catch((err)=>{
         if(err){
             console.log("Err: " + err);
@@ -93,16 +93,6 @@ function getAllPlaces(req, res){
         }
         res.status(200).send(docs);
     });
-}
-
-function getPlacesCreatedByAdmin(req, res){
-  Place.find({email: req.query.email}, (err, docs)=> {
-    if(err){
-      console.log("Err: " + err);
-      res.status(400).send("Error occured!");
-    }
-    res.status(200).send(docs);
-});
 }
 
 function getOnePlace(req, res){
@@ -220,7 +210,10 @@ function getQueue(req, res){
     .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1})
     .then((docs)=>{
         if(docs){
-            console.log(docs)
+            console.log(docs);
+            if(docs.length == 0) {
+                res.status(200).send({"waitTime" : "20 mins", "queueLength": docs.length});
+            }
             res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length});
         } else {
             res.status(404).send("No data exists for this input.");
@@ -249,6 +242,5 @@ module.exports = {
     addUser,
     removeUser,
     signup,
-    login,
-    getPlacesCreatedByAdmin
+    login
 }
