@@ -205,16 +205,32 @@ function removeUser(req, res){
 function getQueue(req, res){
     Queue.aggregate([{$match : {placeId: req.query.placeId}},
     { $match: {date: getTodaysDate()}},
-    { $unwind: '$queueMembers'},
-    { $match: {'queueMembers.isActive':true}}])
-    .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1})
+    { $unwind: {path: '$queueMembers', includeArrayIndex: "arrayIndex" }},
+    { $match: {'queueMembers.isActive':true }}])
+    .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1, "arrayIndex": 1})
     .then((docs)=>{
         if(docs){
             console.log(docs);
             if(docs.length == 0) {
-                res.status(200).send({"waitTime" : "20 mins", "queueLength": docs.length});
+                Queue.find({placeId: req.query.placeId, date: getTodaysDate()}).then((result)=>{
+                    console.log("Result: " + result);
+                    res.status(200).send({"waitTime" : result[0].waitTime, "queueLength": docs.length});
+                })
+            } else {
+                Queue.aggregate([{$match : {placeId: req.query.placeId}},
+                    { $match: {date: getTodaysDate()}},
+                    { $unwind: {path: '$queueMembers', includeArrayIndex: "arrayIndex" }},
+                    { $match: {'queueMembers.isActive':true, 'queueMembers.userId': req.query.userId}}])
+                    .project({"_id" : 0, "waitTime" : 1, "queueMembers" : 1, "arrayIndex": 1})
+                    .then((result)=>{
+                        if(result.length == 0){
+                            res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length});
+                        } else {
+                            res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length, "queuePosition": result[0].arrayIndex+1});
+                        }
+                    })
             }
-            res.status(200).send({"waitTime" : docs[0].waitTime, "queueLength": docs.length});
+            
         } else {
             res.status(404).send("No data exists for this input.");
         }
