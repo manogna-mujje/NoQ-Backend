@@ -28,6 +28,8 @@ router.post('/signup', cntl.signup);
 
 router.get('/login', cntl.login);
 
+router.post('/qrcode', cntl.generateQRCode);
+
 // router.get('/myplaces', cntl.getPlacesCreatedByAdmin);
 
 module.exports = router;
