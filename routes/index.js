@@ -22,7 +22,7 @@ router.patch('/queues', cntl.updateWaitTime);
 
 router.post('/queues/addUser', cntl.addUser);
 
-router.patch('/queues/removeUser', cntl.removeUser);
+router.post('/queues/removeUser', cntl.removeUser);
 
 router.post('/signup', cntl.signup);
 
