@@ -10,6 +10,8 @@ router.patch('/places', cntl.updatePlace);
 
 router.get('/places', cntl.getAllPlaces);
 
+router.get('/myplaces', cntl.getMyPlaces);
+
 router.get('/places/:placeId', cntl.getOnePlace);
 
 router.delete('/places', cntl.deletePlace);

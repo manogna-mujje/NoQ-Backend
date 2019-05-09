@@ -239,6 +239,16 @@ function getQueue(req, res){
     });
 }
 
+function getMyPlaces(req, res) {
+    Place.find({email: req.query.email}, (err, docs)=> {
+        if(err){
+            console.log("Err: " + err);
+            res.status(400).send("Error occured!");
+        }
+        res.status(200).send(docs);
+    });
+}
+
 function getTodaysDate() {
     var sysdate = new Date();
     var date =  sysdate.getFullYear().toString() + "-" + (sysdate.getMonth()+1).toString() + "-" + sysdate.getDate().toString();
@@ -250,6 +260,7 @@ module.exports = {
     insertPlace,
     updatePlace,
     getAllPlaces,
+    getMyPlaces,
     getOnePlace,
     deletePlace,
     insertQueue,
