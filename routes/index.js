@@ -32,6 +32,8 @@ router.get('/login', cntl.login);
 
 router.post('/qrcode', cntl.generateQRCode);
 
+router.post('/imageUpload', cntl.uploadImage);
+
 // router.get('/myplaces', cntl.getPlacesCreatedByAdmin);
 
 module.exports = router;

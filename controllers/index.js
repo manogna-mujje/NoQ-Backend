@@ -13,6 +13,22 @@ var hostURL = "http://localhost:5000/"
 const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 
+var upload = require('../db/imageUploadService');
+
+const singleUpload = upload.single('file');
+
+// abstracts function to upload a file returning a promise
+const uploadFile = (buffer, name, type) => {
+    const params = {
+      ACL: 'public-read',
+      Body: buffer,
+      Bucket: '',
+      ContentType: type.mime,
+      Key: `${name}.${type.ext}`
+    };
+    return uploadService.s3.upload(params).promise();
+  };
+
 function generateQRCode(req, res){
   const uniqueId = req.body.uniqueid;
   const admin_Email = req.body.email;
@@ -289,6 +305,19 @@ function getTodaysDate() {
   return date;
 }
 
+function uploadImage(req, res) {
+
+  singleUpload(req, res, function(err){
+      console.log(req.file);
+      if (err) {
+          return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}] });
+      }
+      return res.json({
+          imageURL : req.file.location,
+      });
+  })
+}
+
 module.exports = {
     getHome,
     insertPlace,
@@ -304,5 +333,6 @@ module.exports = {
     removeUser,
     signup,
     login,
-    generateQRCode
+    generateQRCode,
+    uploadImage
 }
