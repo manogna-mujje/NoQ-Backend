@@ -310,6 +310,7 @@ function uploadImage(req, res) {
   singleUpload(req, res, function(err){
       console.log(req.file);
       if (err) {
+          console.log("ERROR!!!! " + err);
           return res.status(422).send({errors: [{title: 'Image Upload Error', detail: err.message}] });
       }
       return res.json({
